@@ -1,5 +1,5 @@
+![Ripper](https://github.com/user-attachments/assets/dfc54db7-33c2-4403-ada1-0e8f11349c50)
 
-![ytripper](https://github.com/user-attachments/assets/c3349fcc-b1d5-4bd0-8648-a2f31d5df88e)
 
 
 
