@@ -5,7 +5,7 @@
 
 # ꧁꧂  Youtube-Ripper
 
-Youtube Ripper lets you easily save youtube videos as video or audio using the highest quality by available. 
+Youtube Ripper lets you easily save videos from ANY WEBSITE as video or audio using the highest quality by available. Even though it ask for a youtube link you can paste any link and it will download the media. 
 
 
 
