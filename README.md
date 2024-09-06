@@ -28,6 +28,23 @@ If you prefer to use the python script follow the steps below:
 
 
 -------------------------------------------------------------------
+# ꧁꧂  Docker Image 🪅
+
+### Setup
+
+`docker pull torquetraction/youtube-ripper:latest`
+
+`docker run -it --name vdl torquetraction/youtube-ripper`
+
+This will setup the container where the output results are saved. 
+
+### Restarting the docker 
+
+Start the container in docker desktop then run the command below
+
+`docker exec -it vdl /bin/bash`
+
+`python3 youtube-ripper.py`
 
 ------------------------------------------------
 
