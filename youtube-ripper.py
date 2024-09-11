@@ -69,7 +69,7 @@ def download_media(url, download_type='video', is_playlist=False):
     # Configure options based on user input
     ydl_opts = {
         'progress_hooks': [progress_hook],
-        'concurrent-fragments': 4  # Added 4 connections for faster download
+        'concurrent-fragments': 1  # 1 Works best for sites that throttle multiple connections. Some formats do not support threads. Higher threads has a negative affect in some cases.
     }
 
     if download_type == 'video':
