@@ -3,21 +3,23 @@
 ![Ripper](https://github.com/user-attachments/assets/dfc54db7-33c2-4403-ada1-0e8f11349c50)
 
 
-### youtube-ripper-gui.exe
-
-![youtube-ripper-gui](https://github.com/user-attachments/assets/5dbbb6de-a753-4f63-893d-20d6a8ab4256)
-
-
 # ꧁꧂  Youtube-Ripper
 
 Youtube Ripper lets you easily save videos from ANY WEBSITE as video or audio using the highest quality by available. Even though it ask for a youtube link you can paste any link and it will download the media. 
 
-
+## Update 9/11/2024 - Added threading for faster download speeds. 
 
 
 # ꧁꧂  How to run
 
 Download youtube-ripper.exe and run it as you would a normal portable app. It will create the download directories in the same folder the exe is located.
+
+### Default Values
+
+    Leaving the options blank will result in the following settings
+
+    question 1 default = Download Video 
+    question 2 default = Not a playlist
 
 If you prefer to use the python script follow the steps below:
 
