@@ -23,6 +23,7 @@
 # ╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝
 # °°°·._.··._.·°°°·.°·..·°¯°··°¯°·.·°.·°°°°·.·°·._.··._.·°°°
 
+
 import yt_dlp
 import os
 from termcolor import colored
@@ -41,8 +42,6 @@ apikey='''
  [91m:[0m   [93m:[0m [92m:[0m  [96m:[0m     [94m:[0m         [95m:[0m        [91m:[0m [93m:[0m[92m:[0m [96m:[0m[94m:[0m    [95m:[0m   [91m:[0m [93m:[0m  
                                                        
 '''
-
-
 
 # Ensure download directories exist
 os.makedirs('./downloads-audio', exist_ok=True)
@@ -70,6 +69,7 @@ def download_media(url, download_type='video', is_playlist=False):
     # Configure options based on user input
     ydl_opts = {
         'progress_hooks': [progress_hook],
+        'concurrent-fragments': 4  # Added 4 connections for faster download
     }
 
     if download_type == 'video':
@@ -129,6 +129,9 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
 
 
 # Disclaimer:
