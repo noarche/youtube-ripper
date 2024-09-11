@@ -7,8 +7,6 @@
 
 Youtube Ripper lets you easily save videos from ANY WEBSITE as video or audio using the highest quality by available. Even though it ask for a youtube link you can paste any link and it will download the media. 
 
-## Update 9/11/2024 - Added threading for faster download speeds. 
-
 
 # ꧁꧂  How to run
 
