@@ -4,6 +4,7 @@ from termcolor import colored
 import sys
 import signal
 import threading
+import time
 
 # Ensure download directories exist
 os.makedirs('./downloads-audio', exist_ok=True)
@@ -14,18 +15,41 @@ os.makedirs('./downloads-stream', exist_ok=True)
 def cprint(text, color='blue', attrs=['bold']):
     print(colored(text, color, attrs=attrs))
 
+# Convert bytes to human-readable size
+def format_size(size):
+    if size == 0:
+        return "0B"
+    power = 1024
+    n = 0
+    labels = ['B', 'KB', 'MB', 'GB', 'TB']
+    while size > power and n < len(labels) - 1:
+        size /= power
+        n += 1
+    return f"{size:.2f} {labels[n]}"
+
+# Convert time to human-readable format
+def format_time(seconds):
+    if seconds < 60:
+        return f"{seconds:.0f} sec"
+    elif seconds < 3600:
+        return f"{seconds // 60:.0f} min {seconds % 60:.0f} sec"
+    else:
+        hours = seconds // 3600
+        minutes = (seconds % 3600) // 60
+        return f"{hours:.0f} hr {minutes:.0f} min"
+
 # Progress bar hook function
 def progress_hook(d):
     if d['status'] == 'downloading':
-        p = d['_percent_str'].strip()
-        speed = d['_speed_str'].strip()
-        eta = d['_eta_str'].strip()
-        total_bytes = d.get('total_bytes', 0)
-        total_size_mb = round(total_bytes / 1024 / 1024, 2) if total_bytes else 'Unknown'
-        sys.stdout.write(f"\r{colored('Progress:', 'cyan', attrs=['bold'])} {p} | {colored('Speed:', 'yellow')} {speed} | {colored('ETA:', 'yellow')} {eta} | {colored('Size:', 'green')} {total_size_mb} MB")
+        frames = d.get('fragment_index', 0)
+        total_frames = d.get('fragment_count', 'Unknown')
+        size_bytes = d.get('downloaded_bytes', 0)
+        size = format_size(size_bytes)
+        time_elapsed = d.get('elapsed', 0)
+        sys.stdout.write(f"\r{colored('Frames:', 'cyan')} {frames}/{total_frames} | {colored('Size:', 'green')} {size} | {colored('Time:', 'yellow')} {format_time(time_elapsed)}")
         sys.stdout.flush()
     elif d['status'] == 'finished':
-        sys.stdout.write(f"\r{colored('Download completed!', 'green', attrs=['bold'])}                  \n")
+        sys.stdout.write(f"\r{colored('Download completed!', 'green', attrs=['bold'])}\n")
         sys.stdout.flush()
 
 # Function to download streams
@@ -39,8 +63,11 @@ def download_stream(url):
 
     def signal_handler(sig, frame):
         print(colored("\nCtrl+C detected, saving stream...", 'yellow'))
-        ydl.download([url])  # Finalize the download before exiting
-        sys.exit(0)
+        ydl_opts['noplaylist'] = True
+        ydl_opts['continuedl'] = True
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])  # Finalize and save as mp4, not mp4.part
+        main()  # Ask for another link after saving
 
     signal.signal(signal.SIGINT, signal_handler)
 
