@@ -19,6 +19,8 @@ Download youtube-ripper.exe and run it as you would a normal portable app. It wi
     question 1 default = Download Video 
     question 2 default = Not a playlist
 
+When downloading stream, press 'ctrl+c' to stop & save file. 
+
 If you prefer to use the python script follow the steps below:
 
 `pip install -r requirements.txt`
