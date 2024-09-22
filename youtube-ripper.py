@@ -39,12 +39,18 @@ def format_time(seconds):
 # Progress bar hook function
 def progress_hook(d):
     if d['status'] == 'downloading':
-        frames = d.get('fragment_index', 0)
-        total_frames = d.get('fragment_count', 'Unknown')
+        # Calculate download speed in KB or MB
+        speed = d.get('speed', 0)
+        speed_human = format_size(speed) + '/s' if speed else "N/A"
+        
+        # Calculate the downloaded size
         size_bytes = d.get('downloaded_bytes', 0)
         size = format_size(size_bytes)
+
         time_elapsed = d.get('elapsed', 0)
-        sys.stdout.write(f"\r{colored('Frames:', 'cyan')} {frames}/{total_frames} | {colored('Size:', 'green')} {size} | {colored('Time:', 'yellow')} {format_time(time_elapsed)}")
+
+        # Display speed and downloaded size
+        sys.stdout.write(f"\r{colored('Download Speed:', 'cyan')} {speed_human} | {colored('Size:', 'green')} {size} | {colored('Time:', 'yellow')} {format_time(time_elapsed)}")
         sys.stdout.flush()
     elif d['status'] == 'finished':
         sys.stdout.write(f"\r{colored('Download completed!', 'green', attrs=['bold'])}\n")
@@ -53,7 +59,6 @@ def progress_hook(d):
 # Gracefully exit and finalize download on Ctrl+C
 def signal_handler(sig, frame):
     cprint("\nCtrl+C detected. Finalizing the download...", 'yellow')
-    # Signal yt-dlp to complete and finalize the current download
     raise KeyboardInterrupt  # This allows yt-dlp to handle graceful shutdown
 
 # Attach signal handler for Ctrl+C
