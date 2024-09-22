@@ -3,8 +3,6 @@ import os
 from termcolor import colored
 import sys
 import signal
-import threading
-import time
 
 # Ensure download directories exist
 os.makedirs('./downloads-audio', exist_ok=True)
@@ -52,33 +50,37 @@ def progress_hook(d):
         sys.stdout.write(f"\r{colored('Download completed!', 'green', attrs=['bold'])}\n")
         sys.stdout.flush()
 
+# Gracefully exit and finalize download on Ctrl+C
+def signal_handler(sig, frame):
+    cprint("\nCtrl+C detected. Finalizing the download...", 'yellow')
+    # Signal yt-dlp to complete and finalize the current download
+    raise KeyboardInterrupt  # This allows yt-dlp to handle graceful shutdown
+
+# Attach signal handler for Ctrl+C
+signal.signal(signal.SIGINT, signal_handler)
+
 # Function to download streams
 def download_stream(url):
     ydl_opts = {
         'format': 'best',
         'outtmpl': './downloads-stream/%(title)s.%(ext)s',
         'progress_hooks': [progress_hook],
-        'concurrent-fragments': 1  # Sequential download of video/audio fragments
+        'concurrent-fragments': 1,  # Sequential download of video/audio fragments
+        'continuedl': True  # Enable resuming the download if interrupted
     }
 
-    def signal_handler(sig, frame):
-        print(colored("\nCtrl+C detected, saving stream...", 'yellow'))
-        ydl_opts['noplaylist'] = True
-        ydl_opts['continuedl'] = True
+    try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([url])  # Finalize and save as mp4, not mp4.part
-        main()  # Ask for another link after saving
-
-    signal.signal(signal.SIGINT, signal_handler)
-
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([url])
+            ydl.download([url])
+    except KeyboardInterrupt:
+        cprint("\nDownload interrupted. The file has been saved.", 'yellow')
 
 # Function to download media (video/audio)
 def download_media(url, download_type='video', is_playlist=False):
     ydl_opts = {
         'progress_hooks': [progress_hook],
-        'concurrent-fragments': 1  # Sequential download of video/audio fragments
+        'concurrent-fragments': 1,  # Sequential download of video/audio fragments
+        'continuedl': True  # Enable resuming the download if interrupted
     }
 
     if download_type == 'video':
@@ -100,9 +102,11 @@ def download_media(url, download_type='video', is_playlist=False):
     # Adjust noplaylist option based on is_playlist
     ydl_opts['noplaylist'] = not is_playlist
 
-    # Download the media
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([url])
+    try:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+    except KeyboardInterrupt:
+        cprint("\nDownload interrupted. The file has been saved.", 'yellow')
 
 # Main menu function
 def main():
