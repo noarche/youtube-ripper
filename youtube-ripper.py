@@ -4,6 +4,21 @@ from termcolor import colored
 import sys
 import signal
 
+main_logo = '''
+   [91m▄[0m[93m█[0m[92m█[0m[96m█[0m[94m█[0m[95m█[0m[91m█[0m[93m█[0m[92m█[0m  [96m▄[0m[94m█[0m     [95m▄[0m[91m█[0m[93m█[0m[92m█[0m[96m█[0m[94m█[0m[95m█[0m[91m█[0m[93m▄[0m    [92m▄[0m[96m█[0m[94m█[0m[95m█[0m[91m█[0m[93m█[0m[92m█[0m[96m█[0m[94m▄[0m    [95m▄[0m[91m█[0m[93m█[0m[92m█[0m[96m█[0m[94m█[0m[95m█[0m[91m█[0m[93m█[0m    [92m▄[0m[96m█[0m[94m█[0m[95m█[0m[91m█[0m[93m█[0m[92m█[0m[96m█[0m[94m█[0m 
+  [95m█[0m[91m█[0m[93m█[0m    [92m█[0m[96m█[0m[94m█[0m [95m█[0m[91m█[0m[93m█[0m    [92m█[0m[96m█[0m[94m█[0m    [95m█[0m[91m█[0m[93m█[0m   [92m█[0m[96m█[0m[94m█[0m    [95m█[0m[91m█[0m[93m█[0m   [92m█[0m[96m█[0m[94m█[0m    [95m█[0m[91m█[0m[93m█[0m   [92m█[0m[96m█[0m[94m█[0m    [95m█[0m[91m█[0m[93m█[0m 
+  [92m█[0m[96m█[0m[94m█[0m    [95m█[0m[91m█[0m[93m█[0m [92m█[0m[96m█[0m[94m█[0m[95m▌[0m   [91m█[0m[93m█[0m[92m█[0m    [96m█[0m[94m█[0m[95m█[0m   [91m█[0m[93m█[0m[92m█[0m    [96m█[0m[94m█[0m[95m█[0m   [91m█[0m[93m█[0m[92m█[0m    [96m█[0m[94m▀[0m    [95m█[0m[91m█[0m[93m█[0m    [92m█[0m[96m█[0m[94m█[0m 
+ [95m▄[0m[91m█[0m[93m█[0m[92m█[0m[96m▄[0m[94m▄[0m[95m▄[0m[91m▄[0m[93m█[0m[92m█[0m[96m▀[0m [94m█[0m[95m█[0m[91m█[0m[93m▌[0m   [92m█[0m[96m█[0m[94m█[0m    [95m█[0m[91m█[0m[93m█[0m   [92m█[0m[96m█[0m[94m█[0m    [95m█[0m[91m█[0m[93m█[0m  [92m▄[0m[96m█[0m[94m█[0m[95m█[0m[91m▄[0m[93m▄[0m[92m▄[0m      [96m▄[0m[94m█[0m[95m█[0m[91m█[0m[93m▄[0m[92m▄[0m[96m▄[0m[94m▄[0m[95m█[0m[91m█[0m[93m▀[0m 
+[92m▀[0m[96m▀[0m[94m█[0m[95m█[0m[91m█[0m[93m▀[0m[92m▀[0m[96m▀[0m[94m▀[0m[95m▀[0m   [91m█[0m[93m█[0m[92m█[0m[96m▌[0m [94m▀[0m[95m█[0m[91m█[0m[93m█[0m[92m█[0m[96m█[0m[94m█[0m[95m█[0m[91m█[0m[93m█[0m[92m▀[0m  [96m▀[0m[94m█[0m[95m█[0m[91m█[0m[93m█[0m[92m█[0m[96m█[0m[94m█[0m[95m█[0m[91m█[0m[93m▀[0m  [92m▀[0m[96m▀[0m[94m█[0m[95m█[0m[91m█[0m[93m▀[0m[92m▀[0m[96m▀[0m     [94m▀[0m[95m▀[0m[91m█[0m[93m█[0m[92m█[0m[96m▀[0m[94m▀[0m[95m▀[0m[91m▀[0m[93m▀[0m   
+[92m▀[0m[96m█[0m[94m█[0m[95m█[0m[91m█[0m[93m█[0m[92m█[0m[96m█[0m[94m█[0m[95m█[0m[91m█[0m[93m█[0m [92m█[0m[96m█[0m[94m█[0m    [95m█[0m[91m█[0m[93m█[0m          [92m█[0m[96m█[0m[94m█[0m          [95m█[0m[91m█[0m[93m█[0m    [92m█[0m[96m▄[0m  [94m▀[0m[95m█[0m[91m█[0m[93m█[0m[92m█[0m[96m█[0m[94m█[0m[95m█[0m[91m█[0m[93m█[0m[92m█[0m[96m█[0m 
+  [94m█[0m[95m█[0m[91m█[0m    [93m█[0m[92m█[0m[96m█[0m [94m█[0m[95m█[0m[91m█[0m    [93m█[0m[92m█[0m[96m█[0m          [94m█[0m[95m█[0m[91m█[0m          [93m█[0m[92m█[0m[96m█[0m    [94m█[0m[95m█[0m[91m█[0m   [93m█[0m[92m█[0m[96m█[0m    [94m█[0m[95m█[0m[91m█[0m 
+  [93m█[0m[92m█[0m[96m█[0m    [94m█[0m[95m█[0m[91m█[0m [93m█[0m[92m▀[0m    [96m▄[0m[94m█[0m[95m█[0m[91m█[0m[93m█[0m[92m▀[0m       [96m▄[0m[94m█[0m[95m█[0m[91m█[0m[93m█[0m[92m▀[0m        [96m█[0m[94m█[0m[95m█[0m[91m█[0m[93m█[0m[92m█[0m[96m█[0m[94m█[0m[95m█[0m[91m█[0m   [93m█[0m[92m█[0m[96m█[0m    [94m█[0m[95m█[0m[91m█[0m 
+  [93m█[0m[92m█[0m[96m█[0m    [94m█[0m[95m█[0m[91m█[0m                                               [93m█[0m[92m█[0m[96m█[0m    [94m█[0m[95m█[0m[91m█[0m 
+                
+
+'''
+print(main_logo)
+
 # Ensure download directories exist
 os.makedirs('./downloads-audio', exist_ok=True)
 os.makedirs('./downloads-video', exist_ok=True)
@@ -25,8 +40,8 @@ def format_size(size):
         n += 1
     return f"{size:.2f} {labels[n]}"
 
-# Convert time to human-readable format
-def format_time(seconds):
+# Convert seconds to ETA (human-readable format)
+def format_eta(seconds):
     if seconds < 60:
         return f"{seconds:.0f} sec"
     elif seconds < 3600:
@@ -39,27 +54,29 @@ def format_time(seconds):
 # Progress bar hook function
 def progress_hook(d):
     if d['status'] == 'downloading':
-        # Calculate download speed in KB or MB
-        speed = d.get('speed', 0)
-        speed_human = format_size(speed) + '/s' if speed else "N/A"
+        size_bytes = d.get('downloaded_bytes', 0) or 0
+        total_size_bytes = d.get('total_bytes', 0) or 0
+        total_size_mb = format_size(total_size_bytes)
+        downloaded_mb = format_size(size_bytes)
         
-        # Calculate the downloaded size
-        size_bytes = d.get('downloaded_bytes', 0)
-        size = format_size(size_bytes)
+        # Ensure download speed is not None
+        download_speed = format_size(d.get('speed') or 0)
+        eta = format_eta(d.get('eta', 0) or 0)
+        progress = d.get('progress', 0) * 100 if 'progress' in d else (size_bytes / total_size_bytes * 100 if total_size_bytes else 0)
 
-        time_elapsed = d.get('elapsed', 0)
-
-        # Display speed and downloaded size
-        sys.stdout.write(f"\r{colored('Download Speed:', 'cyan')} {speed_human} | {colored('Size:', 'green')} {size} | {colored('Time:', 'yellow')} {format_time(time_elapsed)}")
+        # Print in your desired format
+        sys.stdout.write(f"\r{colored('Downloading:', 'cyan', attrs=['bold'])} {progress:.2f}% at {download_speed}/s (ETA: {eta}, Size: {total_size_mb})")
         sys.stdout.flush()
+        
     elif d['status'] == 'finished':
         sys.stdout.write(f"\r{colored('Download completed!', 'green', attrs=['bold'])}\n")
         sys.stdout.flush()
 
+
 # Gracefully exit and finalize download on Ctrl+C
 def signal_handler(sig, frame):
     cprint("\nCtrl+C detected. Finalizing the download...", 'yellow')
-    raise KeyboardInterrupt  # This allows yt-dlp to handle graceful shutdown
+    raise KeyboardInterrupt  # Allows yt-dlp to handle graceful shutdown
 
 # Attach signal handler for Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
@@ -120,6 +137,7 @@ def main():
         cprint("https://github.com/noarche/youtube-ripper", color='blue')
         cprint("Make a selection for audio or video & playlist. Leave options blank for quick default setting.", color='magenta')
         cprint("Enter the link and wait until prompted for another link!!", color='red')
+        cprint("When downloading a stream press CTRL+C to stop recording and save the video.", color='magenta')
         cprint("The same settings will be used for the next link unless you return to the menu.", color='red')
         cprint("Return to the menu to start over by typing 'm' or 'menu' instead of another link.", color='yellow')
         cprint("\n", color='blue')
@@ -149,3 +167,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
