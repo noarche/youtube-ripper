@@ -1,2 +1,2 @@
-python ripper.py
+python youtube-ripper.py
 pause

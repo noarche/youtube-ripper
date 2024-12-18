@@ -1,2 +1,2 @@
-python ripper.py -tor
+python youtube-ripper.py -tor
 pause

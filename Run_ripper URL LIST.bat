@@ -1,2 +1,2 @@
-python ripper.py -file lks.txt
+python youtube-ripper.py -file URL_LIST.txt
 pause
