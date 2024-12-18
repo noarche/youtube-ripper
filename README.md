@@ -7,6 +7,19 @@
 
 Youtube Ripper lets you easily save videos from ANY WEBSITE as video or audio using the highest quality by available. Even though it ask for a youtube link you can paste any link and it will download the media. 
 
+## Recent Update
+
+### Download Multiple Videos from list of URLS, 100% automated. 
+
+Use `python youtube-ripper.py -file ANYFILENAME.txt`
+
+The text file must contain 1 url per line. The process is fully automated and no futher user input is needed. If a link is 404/429 or other common errors the script will silently skip to next URL in list. Script will stop once the last video has been downloaded.
+
+### Download videos using TOR proxy
+
+Use `python youtube-ripper.py -tor` to use Tor Browser Proxy on port 9150,  If you use the TOR service you will need to edit the port in the script to 9050.
+
+If you want to use tor and download a list use both `-tor -file` or use torsocks and only `-file`
 
 # ꧁꧂  How to run
 
